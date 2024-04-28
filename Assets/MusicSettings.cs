@@ -6,38 +6,48 @@ using UnityEngine.UI;
 
 public class MusicSettings : MonoBehaviour
 {
-    [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private Slider MasterAudio;
-    [SerializeField] private Slider MusicAudio;
-    [SerializeField] private Slider SFXAudio;
-    [SerializeField] private AudioSettings audioSettings; 
+    public static MusicSettings Instance { get; private set; }
 
-    void Start()
+    public AudioMixer audioMixer;
+    public AudioSettings audioSettings; 
+
+    [SerializeField] private Slider masterVolumeSlider;
+    [SerializeField] private Slider musicVolumeSlider;
+    [SerializeField] private Slider sfxVolumeSlider;
+
+    private void Awake()
     {
-        MasterAudio.value = audioSettings.masterVolume;
-        MusicAudio.value = audioSettings.musicVolume;
-        SFXAudio.value = audioSettings.sfxVolume;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        masterVolumeSlider.value = audioSettings.masterVolume;
+        musicVolumeSlider.value = audioSettings.musicVolume;
+        sfxVolumeSlider.value = audioSettings.sfxVolume;
     }
 
-    public void SetMasterVolume()
+    public void SetMasterVolume(float volume)
     {
-        float volume = MasterAudio.value;
         audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
         audioSettings.masterVolume = volume;
     }
 
-    public void SetMusicVolume()
+    public void SetMusicVolume(float volume)
     {
-        float volume = MusicAudio.value;
         audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
-        audioSettings.musicVolume = volume; 
+        audioSettings.musicVolume = volume;
     }
 
-    public void SetSFXVolume()
+    public void SetSFXVolume(float volume)
     {
-        float volume = SFXAudio.value;
         audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-        audioSettings.sfxVolume = volume; 
+        audioSettings.sfxVolume = volume;
     }
 }
 

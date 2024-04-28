@@ -17,10 +17,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float z_Movement;
     [SerializeField] private bool isMoving;
     [SerializeField] private float velocityModifier = 5f;
+    public GameObject messagePanel; // Referencia al panel de mensaje en el Canvas
+    public float displayTime = 5.0f; // Tiempo que se mostrará el mensaje
+    public NPCMove npcMovement; // Referencia al script de movimiento del NPC
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        messagePanel.SetActive(false); // Oculta el panel de mensaje al inicio
     }
     private void Update()
     {
@@ -68,5 +72,26 @@ public class PlayerMovement : MonoBehaviour
     {
         x_Movement = context.ReadValue<Vector3>().x;
         z_Movement = context.ReadValue<Vector3>().z;
+    }
+    public void Interaction(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            StartCoroutine(InteractWithNPC());
+        }
+    }
+    private IEnumerator InteractWithNPC()
+    {
+        // Asegúrate de que el jugador esté cerca del NPC y de que el NPC no se esté moviendo
+        if (Vector3.Distance(transform.position, npcMovement.transform.position) < 3.0f && !npcMovement.IsMoving)
+        {
+            messagePanel.SetActive(true); // Muestra el panel de mensaje
+            npcMovement.PauseMovement(); // Detiene el movimiento del NPC
+
+            yield return new WaitForSeconds(displayTime); // Espera por el tiempo definido
+
+            messagePanel.SetActive(false); // Oculta el panel de mensaje
+            npcMovement.ResumeMovement(); // Reanuda el movimiento del NPC
+        }
     }
 }
