@@ -82,16 +82,15 @@ public class PlayerMovement : MonoBehaviour
     }
     private IEnumerator InteractWithNPC()
     {
-        // Asegúrate de que el jugador esté cerca del NPC y de que el NPC no se esté moviendo
         if (Vector3.Distance(transform.position, npcMovement.transform.position) < 3.0f && !npcMovement.IsMoving)
         {
-            messagePanel.SetActive(true); // Muestra el panel de mensaje
-            npcMovement.PauseMovement(); // Detiene el movimiento del NPC
+            messagePanel.SetActive(true); 
+            npcMovement.PauseMovement(); 
 
-            yield return new WaitForSeconds(displayTime); // Espera por el tiempo definido
+            yield return new WaitForSeconds(displayTime); 
 
-            messagePanel.SetActive(false); // Oculta el panel de mensaje
-            npcMovement.ResumeMovement(); // Reanuda el movimiento del NPC
+            messagePanel.SetActive(false); 
+            npcMovement.ResumeMovement(); 
         }
     }
 }
