@@ -10,10 +10,12 @@ public class CAnvasManager : MonoBehaviour
         if (MusicSettings.activeSelf == false)
         {
             MusicSettings.SetActive(true);
+            Time.timeScale = 0f;
         }
         else
         {
             MusicSettings.SetActive(false);
+            Time.timeScale = 1f;
         }
     }
 }

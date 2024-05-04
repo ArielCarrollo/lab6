@@ -80,6 +80,18 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(InteractWithNPC());
         }
     }
+    public void Pause()
+    {
+        if (Time.timeScale == 1)
+        {
+            Time.timeScale = 0f;
+
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
     private IEnumerator InteractWithNPC()
     {
         if (Vector3.Distance(transform.position, npcMovement.transform.position) < 3.0f && !npcMovement.IsMoving)
